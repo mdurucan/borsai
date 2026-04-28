@@ -81,17 +81,17 @@ def health():
 
 @app.get("/debug/yfinance")
 def debug_yfinance():
-    """yfinance bağlantı testi — geliştirme amaçlı."""
+    """Veri çekme bağlantı testi — geliştirme amaçlı."""
     import traceback
-    import yfinance as yf
-    from services.data_fetcher import _YF_SESSION
+    from services.data_fetcher import fetch_stock_info, fetch_history
     results = {}
     for sym in ["AKBNK.IS", "THYAO.IS"]:
         try:
-            ticker = yf.Ticker(sym, session=_YF_SESSION)
-            info = ticker.info
-            price = info.get("currentPrice") or info.get("regularMarketPrice") or info.get("previousClose")
-            results[sym] = {"ok": True, "price": price, "keys_sample": list(info.keys())[:5]}
+            info = fetch_stock_info(sym)
+            if info:
+                results[sym] = {"ok": True, "price": info.get("close"), "change_pct": info.get("change_pct")}
+            else:
+                results[sym] = {"ok": False, "error": "fetch_stock_info None döndü"}
         except Exception as e:
             results[sym] = {"ok": False, "error": str(e), "trace": traceback.format_exc()[-500:]}
     return results
