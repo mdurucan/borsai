@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  --bg-primary:   #0A0E1A;
+  --bg-card:      #111827;
+  --bg-hover:     #1a2234;
+  --accent-green: #00D4A8;
+  --accent-red:   #FF4560;
+  --neutral:      #6B7280;
+  --text-primary: #F9FAFB;
+  --text-muted:   #9CA3AF;
+  --border:       #1F2937;
+}
+
+@theme inline {
+  --color-bg-primary:   var(--bg-primary);
+  --color-bg-card:      var(--bg-card);
+  --color-bg-hover:     var(--bg-hover);
+  --color-accent-green: var(--accent-green);
+  --color-accent-red:   var(--accent-red);
+  --color-neutral:      var(--neutral);
+  --color-text-primary: var(--text-primary);
+  --color-text-muted:   var(--text-muted);
+  --color-border:       var(--border);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  height: 100%;
+}
+
+/* Sayı gösterimleri için monospace */
+.font-mono { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* Pozitif / negatif renk yardımcıları */
+.positive { color: var(--accent-green); }
+.negative { color: var(--accent-red); }
