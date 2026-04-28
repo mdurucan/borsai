@@ -1,0 +1,78 @@
+{
+  "name": "bist30-ai",
+  "version": "1.0.0",
+  "description": "BIST30 AI Borsa Analiz ve Öneri Sistemi",
+  "main": "main.js",
+  "author": "mdurucan",
+  "license": "ISC",
+  "type": "commonjs",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --mac --arm64"
+  },
+  "devDependencies": {
+    "electron": "^24.8.8",
+    "electron-builder": "^26.8.1"
+  },
+  "build": {
+    "appId": "com.mdurucan.bist30ai",
+    "productName": "BIST30 AI",
+    "mac": {
+      "category": "public.app-category.finance",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.icns",
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "title": "BIST30 AI",
+      "background": "assets/dmg-background.png",
+      "window": {
+        "width": 540,
+        "height": 380
+      },
+      "contents": [
+        {
+          "x": 140,
+          "y": 200,
+          "type": "file"
+        },
+        {
+          "x": 400,
+          "y": 200,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "extraResources": [
+      {
+        "from": "../backend_bundle",
+        "to": "backend_bundle",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "../frontend_standalone",
+        "to": "frontend_standalone",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "files": [
+      "main.js",
+      "assets/**/*"
+    ],
+    "asar": true,
+    "compression": "maximum"
+  }
+}

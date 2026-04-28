@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+logs/
+*.log
+backend.log
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Next.js
+frontend/.next/
+frontend/node_modules/
+frontend/.env.local
+
+# Electron build output
+electron/dist/
+electron/node_modules/
+
+# PyInstaller
+backend_dist/
+backend_dist_dir/
+backend_bundle/
+frontend_standalone/
+
+# macOS
+.DS_Store
+*.DS_Store
+
+# Alembic (local generated)
+backend/alembic/versions/
+
+# IDE
+.vscode/
+.idea/
