@@ -3,10 +3,11 @@ from sqlalchemy.orm import Session
 from sqlalchemy import desc
 from typing import Optional
 import yfinance as yf
+import requests
 
 from database import get_db
 from models import Stock, Snapshot
-from services.data_fetcher import fetch_history
+from services.data_fetcher import fetch_history, _YF_SESSION
 
 router = APIRouter(prefix="/api/stocks", tags=["stocks"])
 
@@ -54,7 +55,7 @@ def live_prices():
 
     def fetch_one(sym: str):
         try:
-            info = yf.Ticker(sym).fast_info
+            info = yf.Ticker(sym, session=_YF_SESSION).fast_info
             close = float(info.last_price)
             prev = float(info.previous_close)
             change_pct = (close - prev) / prev * 100 if prev else 0.0
@@ -78,7 +79,7 @@ def live_price(symbol: str):
     """Tek hisse için anlık fiyat."""
     sym = symbol.upper()
     try:
-        ticker = yf.Ticker(sym)
+        ticker = yf.Ticker(sym, session=_YF_SESSION)
         info = ticker.fast_info
         close = float(info.last_price)
         prev = float(info.previous_close)

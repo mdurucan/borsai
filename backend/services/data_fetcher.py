@@ -5,6 +5,16 @@ from typing import Optional
 
 import yfinance as yf
 import pandas as pd
+import requests
+
+# Railway ve diğer cloud ortamlarında Yahoo Finance engelini aşmak için
+_YF_SESSION = requests.Session()
+_YF_SESSION.headers.update({
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "tr-TR,tr;q=0.9,en-US;q=0.8",
+    "Accept-Encoding": "gzip, deflate, br",
+})
 
 from utils.constants import BIST30_SYMBOLS, STOCK_META
 
@@ -18,7 +28,7 @@ def fetch_stock_info(symbol: str) -> Optional[dict]:
     """
     try:
         fetch_start = time.time()
-        ticker = yf.Ticker(symbol)
+        ticker = yf.Ticker(symbol, session=_YF_SESSION)
         info = ticker.info
 
         price = (
@@ -65,7 +75,7 @@ def fetch_history(symbol: str, period: str = "1y", interval: str = "1d") -> Opti
     interval: '1m', '5m', '15m', '1h', '1d', '1wk', '1mo'
     """
     try:
-        ticker = yf.Ticker(symbol)
+        ticker = yf.Ticker(symbol, session=_YF_SESSION)
         df = ticker.history(period=period, interval=interval)
         if df.empty:
             logger.warning(f"{symbol}: {period} geçmiş veri boş döndü.")
@@ -89,7 +99,7 @@ def fetch_performance_returns(symbol: str) -> dict:
         "performance_1y": None,
     }
     try:
-        ticker = yf.Ticker(symbol)
+        ticker = yf.Ticker(symbol, session=_YF_SESSION)
         df = ticker.history(period="1y", interval="1d")
         if df.empty or len(df) < 2:
             return returns
