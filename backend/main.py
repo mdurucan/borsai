@@ -77,3 +77,21 @@ def health():
         "status": "ok",
         "scheduler": get_scheduler_status(),
     }
+
+
+@app.get("/debug/yfinance")
+def debug_yfinance():
+    """yfinance bağlantı testi — geliştirme amaçlı."""
+    import traceback
+    import yfinance as yf
+    from services.data_fetcher import _YF_SESSION
+    results = {}
+    for sym in ["AKBNK.IS", "THYAO.IS"]:
+        try:
+            ticker = yf.Ticker(sym, session=_YF_SESSION)
+            info = ticker.info
+            price = info.get("currentPrice") or info.get("regularMarketPrice") or info.get("previousClose")
+            results[sym] = {"ok": True, "price": price, "keys_sample": list(info.keys())[:5]}
+        except Exception as e:
+            results[sym] = {"ok": False, "error": str(e), "trace": traceback.format_exc()[-500:]}
+    return results
